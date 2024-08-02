@@ -1,0 +1,45 @@
+import random
+
+def generate_number():
+    return str(random.randint(1000, 9999))
+
+def number(secretno, guess):
+    cows = 0
+    bulls = 0
+    secretno_list = list(secretno)
+    guess_list = list(guess)
+
+    
+    for i in range(4):
+        if guess_list[i] == secretno_list[i]:
+            cows += 1
+            secretno_list[i] = guess_list[i] = None
+    
+   
+    for i in range(4):
+        if guess_list[i] and guess_list[i] in secretno_list:
+            bulls += 1
+            secretno_list[secretno_list.index(guess_list[i])] = None
+    
+    return cows, bulls
+
+def play_game():
+    secretno_number = generate_number()
+    attempts = 0
+    while True:
+        guess = input("Enter your 4-digit guess: ")
+        if not guess.isdigit() or len(guess) != 4:
+            print("Invalid input. Please enter a 4-digit number.")
+            continue
+        
+        attempts += 1
+        cows, bulls = number(secretno_number, guess)
+        
+        print("Cows: {0}, Bulls: {1}".format(cows, bulls))
+        
+        if cows == 4:
+            print(f"Congratulations! You guessed the correct number {secretno_number} in {attempts} attempts.")
+            break
+
+if __name__ == "__main__":
+    play_game()
